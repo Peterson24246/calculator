@@ -1,0 +1,19 @@
+body {
+    display: flex;
+    background: aliceblue;
+    justify-content: center;
+}
+
+.calculator {
+    border: 1px solid black;
+    background: lightgray;
+    display: flex;
+    flex-direction: column;
+}
+
+.display {
+    background: grey;
+    height: 50px;
+    width: 300px;
+    margin: 20px;
+}
