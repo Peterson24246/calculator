@@ -1,6 +1,6 @@
 body {
     display: flex;
-    background: aliceblue;
+    background: rgb(171, 215, 253);
     justify-content: center;
 }
 
@@ -9,11 +9,51 @@ body {
     background: lightgray;
     display: flex;
     flex-direction: column;
+    margin-top: 50px;
+    border-radius: 10px;
 }
 
 .display {
     background: grey;
     height: 50px;
-    width: 300px;
+    width: 200px;
     margin: 20px;
+    box-shadow: 0 0 7px 2px rgb(53, 53, 53) inset;
+}
+
+.large-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0px 20px;
+    height: 2.5em;
+    
+}
+
+.clear {
+    background-color: orange;
+    color: white;
+}
+
+.equals {
+    background-color: orange;
+    color: white;
+}
+
+.small-buttons {
+    margin: 0px 20px 20px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.small-buttons > button {
+    display: block;
+    height: 3em;
+}
+
+.number {
+    background-color: rgb(228, 228, 228);
+}
+
+.operator {
+    background-color: rgb(97, 96, 96);
 }
