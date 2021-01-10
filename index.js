@@ -42,42 +42,41 @@ function clearScreen() {
 }
 
 // Handles a number button click
-function operandFunction(e) {
+function operandFunction(value) {
     if (errorCheck()) {return;}; // Does nothing if the screen has an error
     if (operator === '') {
         if (screenFull()) return; // Prevents adding more than max digits to the screen
-        displayReadout.textContent += e.target.textContent;
+        displayReadout.textContent += value;
     }
     else {
         if (displayReadout.textContent !== '' && secondOperand === '') {
             clearScreen()
-            displayReadout.textContent = e.target.textContent;
+            displayReadout.textContent = value;
             secondOperand = displayReadout.textContent;
         } else {
             if (screenFull()) return; // Prevents adding more than max digits to the screen
-            displayReadout.textContent += e.target.textContent;
+            displayReadout.textContent += value;
             secondOperand = displayReadout.textContent;
         }
     }
 }
 
 // Handles an operator button click
-function operatorFunction(e) {
+function operatorFunction(value) {
     if (errorCheck()) {return;}; // Does nothing if the screen has an error
     if (operator !== '') {
-        secondOperand = displayReadout.textContent;
-        let operatorHolder  = e.target.textContent; // Retains the new operator
+        let storedOperator = value; // Retains new operator and completes previous calculation
         equalFunction(firstOperand, secondOperand, operator);
-        operator = operatorHolder; // Sets the retained operator again
+        operator = storedOperator; // Restores saved operator
     } else {
-        operator = e.target.textContent;
+        operator = value;
         firstOperand = displayReadout.textContent;
     }
     
 }
 
 // Handles an equal button click
-function equalFunction(e) {
+function equalFunction() {
     if (secondOperand === '') {
         return; // This avoids wiping the skin on repeated clicks of the equal button
     }
@@ -87,16 +86,15 @@ function equalFunction(e) {
     } else {
         displayReadout.textContent = result;
     }
-    operator = '';
     firstOperand = displayReadout.textContent;
     secondOperand = '';
     
 }
 
 // Handles a modifier button click
-function modifierFunction(e) {
+function modifierFunction(value) {
     if (errorCheck()) {return;} // Does nothing if the screen has an error
-    if (e.target.textContent === '.') {
+    if (value === '.') {
         if (displayReadout.textContent.indexOf('.') === -1) {
             displayReadout.textContent += '.'
         }
@@ -136,13 +134,27 @@ const modifierButtons = document.querySelectorAll('.modifier')
 
 // Add event listeners to all of the buttons
 numberButtons.forEach(button => {
-    button.addEventListener('click', operandFunction);
+    button.addEventListener('click', (e) => operandFunction(e.target.textContent));
 });
 operatorButtons.forEach(button => {
-    button.addEventListener('click', operatorFunction);
+    button.addEventListener('click', (e) => operatorFunction(e.target.textContent));
 });
 clearButton.addEventListener('click', clearValues);
 equalButton.addEventListener('click', equalFunction);
 modifierButtons.forEach( button => {
-    button.addEventListener('click', modifierFunction);
+    button.addEventListener('click', (e) => modifierFunction(e.target.textContent));
+})
+
+// Add event listener for keyboard input
+document.addEventListener('keydown', (e) => {
+    console.log(e.key);
+    if (Number(e.key)) {
+        operandFunction(e.key)
+    } else if (e.key === '.') {
+        modifierFunction(e.key);
+    } else if (e.key.indexOf('+-*/')) {
+        operatorFunction(e.key)
+    } else if (e.key === '=' || e.key === 'Enter') {
+        equalFunction();
+    }
 })
